@@ -47,7 +47,7 @@ class HomeController extends GetxController {
     isLoading = true;
     update();
 
-    var urlLogin = Uri.parse('https://fashionbiz.org/wowonder/api/auth');
+    var urlLogin = Uri.parse('https://fashionbiz.org/wowonder/api/auth/login');
     var headers = {'Accept': 'application/json'};
     var body = {
       "server_key":

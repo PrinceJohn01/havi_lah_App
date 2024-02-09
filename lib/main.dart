@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:havi_lah/screens/signup_screen.dart';
-
+import 'package:get_storage/get_storage.dart';
+import 'core/homeController/home_controller.dart';
 import 'core/utils/size_utils.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  await GetStorage.init();
+  Get.put(HomeController());
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    const MyApp(), // Your app's widget tree
+  );
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
 }
 
 class MyApp extends StatelessWidget {
