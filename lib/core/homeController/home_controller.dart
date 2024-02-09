@@ -38,6 +38,7 @@ class HomeController extends GetxController {
       "textSub": "Take me to my Dashboard",
     },
   ];
+
   loginUsers({
     required Function(String) showMessage,
     required TextEditingController emailController,
@@ -46,13 +47,14 @@ class HomeController extends GetxController {
     isLoading = true;
     update();
 
-    var urlLogin = Uri.parse('http://localhost/wowonder/api/auth');
+    var urlLogin = Uri.parse('https://fashionbiz.org/wowonder/api/auth');
     var headers = {'Accept': 'application/json'};
     var body = {
+      "server_key":
+          "1eca16c1127fcaf8266a3ae56dffb540f5eaac9f-889fe0e508bf0365111cc95114e29263-88061744",
       'email': emailController.text.trim(),
       'password': passwordController.text.trim(),
-      'device_type':
-          'windows', // Adding device type as per your API requirement
+      'device_type': 'phone', // Adding device type as per your API requirement
     };
 
     try {
@@ -61,11 +63,6 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
-
-        var userId = responseBody["data"]["id"].toString();
-        var token = responseBody["token"];
-
-        // Call the showMessage callback with a success message
         showMessage('Login successful');
 
         // Navigate to the homepage
