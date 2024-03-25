@@ -8,11 +8,6 @@ import '../widgets/my_textfield.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({super.key});
-
-  TextEditingController emailController = TextEditingController();
-
-  TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
@@ -35,21 +30,24 @@ class SignUp extends StatelessWidget {
                     const SizedBox(
                       height: 25,
                     ),
-                    const Text("H A V I - L A H"),
+                    const Text(
+                      "H A V I - L A H",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     const SizedBox(
                       height: 50,
                     ),
                     MyTextField(
-                        hintText: "Email",
+                        hintText: "UserName",
                         obscureText: false,
-                        controller: emailController),
+                        controller: viewModel.userNameController),
                     const SizedBox(
                       height: 20,
                     ),
                     MyTextField(
                         hintText: "Password",
                         obscureText: true,
-                        controller: passwordController),
+                        controller: viewModel.passwordController),
                     const SizedBox(
                       height: 20,
                     ),
@@ -60,15 +58,14 @@ class SignUp extends StatelessWidget {
                       text: "Login",
                       onTap: () {
                         viewModel.loginUsers(
-                            showMessage: (message) {
-                              AnimatedSnackBar.material(
-                                message,
-                                type: AnimatedSnackBarType.error,
-                                duration: const Duration(seconds: 2),
-                              ).show(context);
-                            },
-                            emailController: emailController,
-                            passwordController: passwordController);
+                          showMessage: (message) {
+                            AnimatedSnackBar.material(
+                              message,
+                              type: AnimatedSnackBarType.error,
+                              duration: const Duration(seconds: 2),
+                            ).show(context);
+                          },
+                        );
                       },
                     ),
                     const SizedBox(

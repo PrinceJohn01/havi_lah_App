@@ -9,7 +9,13 @@ import '../../screens/homepagefour_screen/homepagefour_screen.dart';
 class HomeController extends GetxController {
   bool isLoading = false;
 
+  var baseUrl = 'https://fashionbiz.org';
+
   bool visible = true;
+
+  TextEditingController userNameController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
 
   isVisible() {
     visible = !visible;
@@ -41,49 +47,50 @@ class HomeController extends GetxController {
 
   loginUsers({
     required Function(String) showMessage,
-    required TextEditingController emailController,
-    required TextEditingController passwordController,
   }) async {
     isLoading = true;
     update();
 
-    var urlLogin = Uri.parse('https://fashionbiz.org/wowonder/api/auth/login');
+    var baseUrl = 'https://fashionbiz.org/';
     var headers = {'Accept': 'application/json'};
     var body = {
       "server_key":
           "1eca16c1127fcaf8266a3ae56dffb540f5eaac9f-889fe0e508bf0365111cc95114e29263-88061744",
-      'email': emailController.text.trim(),
+      'username': userNameController.text.trim(),
       'password': passwordController.text.trim(),
       'device_type': 'phone', // Adding device type as per your API requirement
     };
 
     try {
-      var response = await http.post(urlLogin, headers: headers, body: body);
-      print(response.body);
+      var response = await http.post(Uri.parse('$baseUrl/api/auth/'),
+          headers: headers, body: body);
+      var responseBody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        var responseBody = jsonDecode(response.body);
-        showMessage('Login successful');
-
-        // Navigate to the homepage
-        Get.offAll(() => const HomepagefourScreen());
-      } else if (response.statusCode == 422) {
-        // 401 status code indicates incorrect password
-        isLoading = false;
-        update();
-        // Call the showMessage callback with an error message
-        showMessage('Incorrect password. Please try again.');
-      } else {
-        isLoading = false;
-        update();
-        var json = jsonDecode(response.body);
-
-        // Call the showMessage callback with an error message
-        showMessage('Login failed ${json["message"]}');
+        if (responseBody["api_status"] == "400") {
+          // 400 status code indicates incorrect password or user not found
+          isLoading = false;
+          update();
+          var errorMessage = '';
+          if (responseBody["errors"] != null) {
+            // Check if there are errors in the response
+            if (responseBody["errors"]["error_id"] == 5) {
+              errorMessage = 'Incorrect password. Please try again.';
+            } else if (responseBody["errors"]["error_id"] == 4) {
+              errorMessage = 'Username not found.';
+            } else {
+              errorMessage = 'Login failed';
+            }
+          } else {
+            errorMessage = 'Login failed';
+          }
+          showMessage(errorMessage);
+        } else {
+          showMessage('Login successful');
+          Get.offAll(() => const HomepagefourScreen());
+        }
       }
     } catch (error) {
-      print("Error during login: $error");
-      // Handle the error appropriately
       showMessage('An error occurred during login.');
     }
   }

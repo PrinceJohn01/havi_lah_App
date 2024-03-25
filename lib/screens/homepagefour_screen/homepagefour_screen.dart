@@ -128,7 +128,7 @@ class HomepagefourScreen extends StatelessWidget {
                                 bottom: 10.v,
                               ),
                               child: Text(
-                                "Welcome, James",
+                                "Welcome, Prince",
                                 style: CustomTextStyles.bodyMediumMontserrat,
                               ),
                             ),
@@ -145,7 +145,7 @@ class HomepagefourScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  mainAxisExtent: 161.v,
+                                  mainAxisExtent: 171.v,
                                   crossAxisCount: 2,
                                   mainAxisSpacing: 17.h,
                                   crossAxisSpacing: 17.h,
